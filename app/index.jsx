@@ -1,9 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { Pressable, TouchableOpacity } from "react-native";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import { Link, router } from "expo-router";
+import { SafeAreaView, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import { router } from "expo-router";
 import webSocketService from "../lib/utils/WebSocketService.js";
+import theme from "../lib/styles/theme.js";
 
 export default function App() {
   const [host, setHost] = useState();
@@ -11,23 +12,30 @@ export default function App() {
   const [port, setPort] = useState();
   const [portIsValid, setPortIsValid] = useState();
   const [password, setPassword] = useState();
-  const [passwordIsValid, setPasswordIsValid] = useState();
 
   const [error, setError] = useState();
   const [status, setStatus] = useState();
 
-  function handleConnect() {
+  function validate() {
     setError();
     host ? setHostIsValid(true) : setHostIsValid(false);
     port ? setPortIsValid(true) : setPortIsValid(false);
-    password ? setPasswordIsValid(true) : setPasswordIsValid(false);
+  }
+
+  function handleConnect() {
+    validate();
+
     if (!hostIsValid || !portIsValid) return;
 
-    console.log(status ? "truthy" : "falsy");
-
     setStatus("Connecting");
-
     webSocketService.connect(host, port, password);
+
+    webSocketService.socket.onerror = (event) => {
+      setError(
+        "Failed to connect. Please check that you entered the correct IP address and host."
+      );
+      setStatus();
+    };
     webSocketService.socket.onopen = () => {
       setStatus("Authenticating");
       webSocketService.sendMessage({
@@ -44,85 +52,119 @@ export default function App() {
       if (data.authenticated === 0) {
         setStatus();
         setError(data.error);
-      } else if (data.authenticated === 1) router.replace("/remote");
+      } else if (data.authenticated === 1) router.replace("/remote/");
     };
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Hello World!</Text>
-      <View style={styles.connectForm}>
-        <TextInput
-          style={[styles.textInput, hostIsValid === false && styles.errorInput]}
-          value={host}
-          onChangeText={setHost}
-          keyboardType="numeric"
-          placeholder="Ip Address (eg. 127.0.0.1)"
-        />
-        <TextInput
-          style={[styles.textInput, portIsValid === false && styles.errorInput]}
-          value={port}
-          onChangeText={setPort}
-          keyboardType="numeric"
-          placeholder="Port (eg.1025)"
-        />
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Password"
-          secureTextEntry={true}
-          style={[
-            styles.textInput,
-            passwordIsValid === false && styles.errorInput,
-          ]}
-        />
+    <>
+      <SafeAreaView style={{ backgroundColor: theme.background, flex: 1 }}>
+        <Text style={styles.title}>ProPresenter Live View</Text>
+        <View style={styles.container}>
+          <View style={styles.connectForm}>
+            <TextInput
+              style={[
+                styles.textInput,
+                hostIsValid === false && styles.errorInput,
+              ]}
+              value={host}
+              onChangeText={setHost}
+              placeholder="Ip Address (eg. 127.0.0.1)"
+            />
+            <TextInput
+              style={[
+                styles.textInput,
+                portIsValid === false && styles.errorInput,
+              ]}
+              value={port}
+              onChangeText={setPort}
+              placeholder="Port (eg.1025)"
+            />
+            <TextInput
+              value={password}
+              onChangeText={setPassword}
+              placeholder="Password"
+              secureTextEntry={true}
+              style={[styles.textInput]}
+            />
+          </View>
+          <View style={styles.description}>
+            <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
+              This app is for controlling or viewing live events diplayed by
+              ProPresenter from the stage or wherever you would want.
+            </Text>
+            <Text
+              style={{
+                color: theme.textOnBackground,
+                marginTop: 10,
+                fontSize: 20,
+              }}
+            >
+              To Connect:
+            </Text>
+            <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
+              1: Preferences -&gt; Network -&gt; Enable Network
+            </Text>
+            <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
+              2: In the same, enable remote and create a password
+            </Text>
+            <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
+              3: Enter the IP Address, Port and Password. Click Connect
+            </Text>
+          </View>
+        </View>
+        {error && <Text style={styles.error}>{error}</Text>}
         <TouchableOpacity
           style={[styles.submitButton, { opacity: status ? 0.5 : 1 }]}
           disabled={status}
           onPress={handleConnect}
         >
-          <Text>{status ? status : "Connect"}</Text>
+          <Text style={{ fontSize: 26 }}>{status ? status : "Connect"}</Text>
         </TouchableOpacity>
-        {error && <Text style={styles.error}>{error}</Text>}
-      </View>
-
-      <TouchableOpacity style={styles.button}>
-        <Button onPress={() => router.push("/remote")} title="Go To Remote" />
-      </TouchableOpacity>
-
-      <StatusBar style="auto" />
-    </View>
+        <StatusBar hidden style="inverted" />
+        <TouchableOpacity onPress={() => router.push("/home")}>
+          <Text style={{ color: "white", padding: 20 }}>to Home</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "dodgerblue",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   title: {
     color: "white",
-    fontSize: 24,
+    fontSize: 36,
+    alignSelf: "center",
+    paddingVertical: 40,
+  },
+  container: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 20,
+    paddingHorizontal: 40,
   },
   connectForm: {
-    width: "50%",
-    maxWidth: 300,
     gap: 5,
+    flex: 1,
+    width: "50%",
+  },
+  description: {
+    flex: 1,
   },
   textInput: {
     borderColor: "white",
+    backgroundColor: "rgba(255,255,255, 0.9)",
     borderWidth: 2,
     borderRadius: 5,
     padding: 10,
   },
   submitButton: {
     marginTop: 20,
-    fontSize: 30,
+    fontSize: 40,
     alignItems: "center",
     textAlign: "center",
-    backgroundColor: "white",
+    backgroundColor: theme.secondary,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -137,6 +179,7 @@ const styles = StyleSheet.create({
   },
   errorInput: {
     borderColor: "firebrick",
+    backgroundColor: "rgba(255, 209, 209, 0.9)",
   },
   error: {
     color: "firebrick",
