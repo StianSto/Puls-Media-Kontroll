@@ -5,6 +5,8 @@ import { StyleSheet } from "react-native";
 import theme from "../../lib/styles/theme.js";
 import { useDispatch, useSelector } from "react-redux";
 import SlideImage from "../../lib/components/SlideImage.jsx";
+import NextSlideBtn from "../../lib/components/NextSlideBtn.jsx";
+import PreviousSlideBtn from "../../lib/components/PreviousSlideBtn.jsx";
 
 const Remote = () => {
   const slides = useSelector((state) => state.presentationCurrent);
@@ -29,7 +31,12 @@ const Remote = () => {
           }}
         />
       </View>
-      <View style={styles.controls}></View>
+      <View style={styles.controls}>
+        <View style={styles.triggers}>
+          <PreviousSlideBtn />
+          <NextSlideBtn />
+        </View>
+      </View>
     </View>
   );
 };
@@ -58,5 +65,9 @@ const styles = StyleSheet.create({
   controls: {
     flex: 1,
     background: "grey",
+  },
+  triggers: {
+    flexDirection: "row",
+    gap: 20,
   },
 });
