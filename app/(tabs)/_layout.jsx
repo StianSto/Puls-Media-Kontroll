@@ -6,9 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faHome, faPlay, fa } from "@fortawesome/free-solid-svg-icons";
 import { StatusBar } from "expo-status-bar";
 
+import { Provider } from "react-redux";
+import store from "../../lib/store/";
+
 export default () => {
   return (
-    <>
+    <Provider store={store}>
       <Tabs
         sceneContainerStyle={{ backgroundColor: theme.background }}
         screenOptions={({ route }) => ({
@@ -41,7 +44,7 @@ export default () => {
         <Tabs.Screen name="remote" />
       </Tabs>
       <StatusBar hidden style="inverted" />
-    </>
+    </Provider>
   );
 };
 

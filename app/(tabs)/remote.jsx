@@ -1,27 +1,52 @@
-import { Text, View, Image } from "react-native";
-import React, { useEffect } from "react";
+import { Text, View, Image, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
 import webSocketService from "../../lib/utils/WebSocketService.js";
 import { StyleSheet } from "react-native";
 import theme from "../../lib/styles/theme.js";
+import { useDispatch, useSelector } from "react-redux";
+import SlideImage from "../../lib/components/SlideImage.jsx";
 
 const Remote = () => {
-  useEffect(() => {
-    // console.log(webSocketService.socket);
-    // webSocketService.sendMessage({ action: "presentationCurrent" });
-  }, []);
+  const slides = useSelector((state) => state.presentationCurrent);
+  const slideIndex = useSelector((state) => state.presentationSlideIndex);
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   refresh();
+  // }, [dispatch]);
+
+  function refresh() {
+    webSocketService.sendMessage({
+      action: "presentationSlideIndex",
+    });
+    webSocketService.sendMessage({
+      action: "presentationCurrent",
+      presentationSlideQuality: 100,
+    });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.slideContainer}>
-        <Image
-          style={styles.currentSlide}
-          source={{ uri: "https://picsum.photos/200/300" }}
-        />
+        <View style={styles.currentSlide}>
+          <SlideImage />
+        </View>
         <Image
           style={styles.nextSlide}
-          source={{ uri: "https://picsum.photos/200/300" }}
+          source={{
+            uri:
+              slides && slideIndex + 1 <= slides.length
+                ? `data:image/jpeg;base64, ${
+                    slides[slideIndex + 1]?.slideImage
+                  }`
+                : null,
+          }}
         />
       </View>
       <View style={styles.controls}></View>
+      <TouchableOpacity onPress={refresh}>
+        <Text style={{ fontSize: 30, color: "white" }}>Refresh</Text>
+      </TouchableOpacity>
     </View>
   );
 };
