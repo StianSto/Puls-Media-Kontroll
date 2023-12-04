@@ -11,20 +11,6 @@ const Remote = () => {
   const slideIndex = useSelector((state) => state.presentationSlideIndex);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   refresh();
-  // }, [dispatch]);
-
-  function refresh() {
-    webSocketService.sendMessage({
-      action: "presentationSlideIndex",
-    });
-    webSocketService.sendMessage({
-      action: "presentationCurrent",
-      presentationSlideQuality: 100,
-    });
-  }
-
   return (
     <View style={styles.container}>
       <View style={styles.slideContainer}>
@@ -44,9 +30,6 @@ const Remote = () => {
         />
       </View>
       <View style={styles.controls}></View>
-      <TouchableOpacity onPress={refresh}>
-        <Text style={{ fontSize: 30, color: "white" }}>Refresh</Text>
-      </TouchableOpacity>
     </View>
   );
 };

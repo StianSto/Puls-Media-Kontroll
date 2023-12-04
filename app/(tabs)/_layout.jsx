@@ -9,7 +9,14 @@ import { StatusBar } from "expo-status-bar";
 import { Provider } from "react-redux";
 import store from "../../lib/store/";
 
+import webSocketService, {
+  webSocketActions,
+} from "../../lib/utils/WebSocketService";
+
 export default () => {
+  webSocketActions.presentationCurrent();
+  webSocketActions.presentationSlideIndex();
+
   return (
     <Provider store={store}>
       <Tabs
@@ -40,7 +47,6 @@ export default () => {
           },
         })}
       >
-        <Tabs.Screen name="home" />
         <Tabs.Screen name="remote" />
       </Tabs>
       <StatusBar hidden style="inverted" />

@@ -60,6 +60,7 @@ export default function App() {
         } else if (data.authenticated === 1) {
           await save("host", host);
           await save("port", port);
+          await save("password", password);
           router.replace("/(tabs)/remote");
         }
       },
@@ -71,8 +72,10 @@ export default function App() {
     (async () => {
       const getHost = await getValueFor("host");
       const getPort = await getValueFor("port");
+      const getPassword = await getValueFor("password");
       setHost(getHost);
       setPort(getPort);
+      setPassword(getPassword);
     })();
   }, []);
 
