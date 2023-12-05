@@ -1,6 +1,5 @@
-import { Text, View, Image, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
-import webSocketService from "../../lib/utils/WebSocketService.js";
+import { View, Image } from "react-native";
+import React from "react";
 import { StyleSheet } from "react-native";
 import theme from "../../lib/styles/theme.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,27 +8,15 @@ import NextSlideBtn from "../../lib/components/NextSlideBtn.jsx";
 import PreviousSlideBtn from "../../lib/components/PreviousSlideBtn.jsx";
 
 const Remote = () => {
-  const slides = useSelector((state) => state.presentationCurrent);
-  const slideIndex = useSelector((state) => state.presentationSlideIndex);
-  const dispatch = useDispatch();
-
   return (
     <View style={styles.container}>
       <View style={styles.slideContainer}>
         <View style={styles.currentSlide}>
           <SlideImage />
         </View>
-        <Image
-          style={styles.nextSlide}
-          source={{
-            uri:
-              slides && slideIndex + 1 <= slides.length
-                ? `data:image/jpeg;base64, ${
-                    slides[slideIndex + 1]?.slideImage
-                  }`
-                : null,
-          }}
-        />
+        <View style={styles.nextSlide}>
+          <SlideImage offset={1} />
+        </View>
       </View>
       <View style={styles.controls}>
         <View style={styles.triggers}>

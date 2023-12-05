@@ -9,9 +9,7 @@ import { StatusBar } from "expo-status-bar";
 import { Provider } from "react-redux";
 import store from "../../lib/store/";
 
-import webSocketService, {
-  webSocketActions,
-} from "../../lib/utils/WebSocketService";
+import { webSocketActions } from "../../lib/utils/webSocketService";
 
 export default () => {
   webSocketActions.presentationCurrent();

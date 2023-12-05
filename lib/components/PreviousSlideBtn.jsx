@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faBackward } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import { remoteApi } from "../utils/WebSocketService";
+import { remoteApi } from "../utils/webSocketService";
 
 export default function PreviousSlideBtn() {
   async function previousSlide() {}
