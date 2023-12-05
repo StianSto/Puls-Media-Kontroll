@@ -4,18 +4,18 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { remoteApi } from "../utils/webSocketService";
 
-export default function PreviousSlideBtn() {
-  async function previousSlide() {}
-
-  previousSlide = remoteApi.previousSlide;
-
+export default function PreviousSlideBtn({
+  style,
+  iconColor = "black",
+  iconSize,
+}) {
   return (
     <>
-      <TouchableOpacity onPress={previousSlide}>
+      <TouchableOpacity onPress={remoteApi.previousSlide} style={style}>
         <FontAwesomeIcon
           icon={faBackward}
-          size={60}
-          color="white"
+          size={iconSize}
+          color={iconColor}
         ></FontAwesomeIcon>
       </TouchableOpacity>
     </>

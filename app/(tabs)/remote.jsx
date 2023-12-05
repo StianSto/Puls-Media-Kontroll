@@ -1,4 +1,4 @@
-import { View, Image } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import { StyleSheet } from "react-native";
 import theme from "../../lib/styles/theme.js";
@@ -20,8 +20,33 @@ const Remote = () => {
       </View>
       <View style={styles.controls}>
         <View style={styles.triggers}>
-          <PreviousSlideBtn />
-          <NextSlideBtn />
+          <PreviousSlideBtn style={styles.triggerBtn} iconSize={50} />
+          <NextSlideBtn style={styles.triggerBtn} iconSize={50} />
+        </View>
+        <View style={styles.textDisplay}>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 24,
+              position: "absolute",
+              top: -20,
+              left: 20,
+              backgroundColor: theme.background,
+              paddingHorizontal: 20,
+            }}
+          >
+            Slide Text
+          </Text>
+          <Text
+            style={{ color: "white", padding: 8, fontSize: 18, marginTop: 30 }}
+          >
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut commodi
+            voluptatibus iusto consectetur maxime officiis voluptatum, illum ab
+            quisquam dolore eius aliquid provident dolorem quae minus temporibus
+            doloribus vero itaque est? Minus omnis nobis numquam aperiam placeat
+            error soluta at, voluptas facere, ab consequatur eveniet quam
+            incidunt rerum, possimus voluptatem.
+          </Text>
         </View>
       </View>
     </View>
@@ -51,10 +76,27 @@ const styles = StyleSheet.create({
   },
   controls: {
     flex: 1,
-    background: "grey",
+    padding: 20,
+    gap: 10,
   },
   triggers: {
     flexDirection: "row",
     gap: 20,
+    alignSelf: "flex-end",
+  },
+  triggerBtn: {
+    backgroundColor: "white",
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  textDisplay: {
+    flex: 1,
+    background: "rgba(255,255,255, 0.3)",
+    padding: 16,
+    position: "relative",
+    borderColor: "white",
+    borderWidth: 2,
   },
 });
