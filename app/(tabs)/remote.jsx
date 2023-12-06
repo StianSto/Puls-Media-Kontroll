@@ -5,8 +5,12 @@ import theme from "../../lib/styles/theme.js";
 import SlideImage from "../../lib/components/SlideImage.jsx";
 import NextSlideBtn from "../../lib/components/NextSlideBtn.jsx";
 import PreviousSlideBtn from "../../lib/components/PreviousSlideBtn.jsx";
+import { useSelector } from "react-redux";
 
 const Remote = () => {
+  const slides = useSelector((state) => state.presentationCurrent);
+  const slideIndex = useSelector((state) => state.presentationSlideIndex);
+
   return (
     <View style={styles.container}>
       <View style={styles.slideContainer}>
@@ -33,14 +37,9 @@ const Remote = () => {
             Slide Text
           </Text>
           <Text
-            style={{ color: "white", padding: 8, fontSize: 18, marginTop: 30 }}
+            style={{ color: "white", padding: 8, fontSize: 38, marginTop: 30 }}
           >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut commodi
-            voluptatibus iusto consectetur maxime officiis voluptatum, illum ab
-            quisquam dolore eius aliquid provident dolorem quae minus temporibus
-            doloribus vero itaque est? Minus omnis nobis numquam aperiam placeat
-            error soluta at, voluptas facere, ab consequatur eveniet quam
-            incidunt rerum, possimus voluptatem.
+            {slides[slideIndex]?.slideText}
           </Text>
         </View>
 
