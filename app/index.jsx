@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import { SafeAreaView, StatusBar, TouchableOpacity } from "react-native";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { router } from "expo-router";
-import webSocketService from "../lib/utils/webSocketService.js";
+import webSocketService, {
+  webSocketActions,
+} from "../lib/utils/webSocketService.js";
 import theme from "../lib/styles/theme.js";
 import * as SecureStore from "expo-secure-store";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -66,9 +68,15 @@ export default function App() {
           await save("host", host);
           await save("port", port);
           await save("password", password);
-          router.replace("/(tabs)/remote");
 
-          setStatus("Authenticated!!!");
+          setStatus("Syncing");
+
+          // initial sync up
+          webSocketActions.presentationCurrent();
+          webSocketActions.presentationSlideIndex();
+          webSocketActions.libraryRequest();
+
+          router.replace("/(tabs)/remote");
         }
       },
       { once: true }

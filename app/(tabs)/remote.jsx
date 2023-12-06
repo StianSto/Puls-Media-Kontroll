@@ -5,6 +5,7 @@ import theme from "../../lib/styles/theme.js";
 import SlideImage from "../../lib/components/SlideImage.jsx";
 import NextSlideBtn from "../../lib/components/NextSlideBtn.jsx";
 import PreviousSlideBtn from "../../lib/components/PreviousSlideBtn.jsx";
+
 const Remote = () => {
   return (
     <View style={styles.container}>
