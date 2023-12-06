@@ -2,11 +2,9 @@ import { View, Text } from "react-native";
 import React from "react";
 import { StyleSheet } from "react-native";
 import theme from "../../lib/styles/theme.js";
-import { useDispatch, useSelector } from "react-redux";
 import SlideImage from "../../lib/components/SlideImage.jsx";
 import NextSlideBtn from "../../lib/components/NextSlideBtn.jsx";
 import PreviousSlideBtn from "../../lib/components/PreviousSlideBtn.jsx";
-
 const Remote = () => {
   return (
     <View style={styles.container}>
@@ -19,10 +17,6 @@ const Remote = () => {
         </View>
       </View>
       <View style={styles.controls}>
-        <View style={styles.triggers}>
-          <PreviousSlideBtn style={styles.triggerBtn} iconSize={50} />
-          <NextSlideBtn style={styles.triggerBtn} iconSize={50} />
-        </View>
         <View style={styles.textDisplay}>
           <Text
             style={{
@@ -47,6 +41,11 @@ const Remote = () => {
             error soluta at, voluptas facere, ab consequatur eveniet quam
             incidunt rerum, possimus voluptatem.
           </Text>
+        </View>
+
+        <View style={styles.triggers}>
+          <PreviousSlideBtn style={styles.triggerBtn} iconSize={70} />
+          <NextSlideBtn style={styles.triggerBtn} iconSize={70} />
         </View>
       </View>
     </View>
@@ -78,16 +77,18 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     gap: 10,
+    flexDirection: "row",
   },
   triggers: {
-    flexDirection: "row",
+    // flexDirection: "row",
     gap: 20,
     alignSelf: "flex-end",
   },
   triggerBtn: {
+    flex: 1,
     backgroundColor: "white",
     paddingVertical: 10,
-    paddingHorizontal: 40,
+    paddingHorizontal: 60,
     justifyContent: "center",
     alignItems: "center",
   },

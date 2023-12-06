@@ -6,6 +6,7 @@ import { router } from "expo-router";
 import webSocketService from "../lib/utils/webSocketService.js";
 import theme from "../lib/styles/theme.js";
 import * as SecureStore from "expo-secure-store";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 async function save(key, value) {
   await SecureStore.setItemAsync(key, value);
@@ -86,85 +87,87 @@ export default function App() {
   }, []);
 
   return (
-    <SafeAreaView style={{ backgroundColor: theme.background, flex: 1 }}>
-      <Text style={styles.title}>ProPresenter Live View</Text>
-      <View style={styles.container}>
-        <View style={styles.connectForm}>
-          <TextInput
-            style={[styles.textInput, host === false && styles.errorInput]}
-            value={host}
-            onChangeText={setHost}
-            onSubmitEditing={() => {
-              this.secondInput.focus();
-            }}
-            blurOnSubmit={false}
-            placeholder="Ip Address (eg. 127.0.0.1)"
-          />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaView style={{ backgroundColor: theme.background, flex: 1 }}>
+        <Text style={styles.title}>ProPresenter Live View</Text>
+        <View style={styles.container}>
+          <View style={styles.connectForm}>
+            <TextInput
+              style={[styles.textInput, host === false && styles.errorInput]}
+              value={host}
+              onChangeText={setHost}
+              onSubmitEditing={() => {
+                this.secondInput.focus();
+              }}
+              blurOnSubmit={false}
+              placeholder="Ip Address (eg. 127.0.0.1)"
+            />
 
-          <TextInput
-            style={[styles.textInput, port === false && styles.errorInput]}
-            value={port}
-            ref={(input) => (this.secondInput = input)}
-            onChangeText={setPort}
-            onSubmitEditing={() => {
-              this.thirdInput.focus();
-            }}
-            blurOnSubmit={false}
-            placeholder="Port (eg.1025)"
-          />
+            <TextInput
+              style={[styles.textInput, port === false && styles.errorInput]}
+              value={port}
+              ref={(input) => (this.secondInput = input)}
+              onChangeText={setPort}
+              onSubmitEditing={() => {
+                this.thirdInput.focus();
+              }}
+              blurOnSubmit={false}
+              placeholder="Port (eg.1025)"
+            />
 
-          <TextInput
-            value={password}
-            onChangeText={setPassword}
-            onEndEditing={validate}
-            placeholder="Password"
-            ref={(input) => (this.thirdInput = input)}
-            secureTextEntry={true}
-            style={[styles.textInput]}
-          />
+            <TextInput
+              value={password}
+              onChangeText={setPassword}
+              onEndEditing={validate}
+              placeholder="Password"
+              ref={(input) => (this.thirdInput = input)}
+              secureTextEntry={true}
+              style={[styles.textInput]}
+            />
+          </View>
+          <View style={styles.description}>
+            <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
+              This app is for controlling or viewing live events diplayed by
+              ProPresenter from the stage or wherever you would want.
+            </Text>
+            <Text
+              style={{
+                color: theme.textOnBackground,
+                marginTop: 10,
+                fontSize: 20,
+              }}
+            >
+              To Connect:
+            </Text>
+            <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
+              1: Preferences -&gt; Network -&gt; Enable Network
+            </Text>
+            <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
+              2: In the same, enable remote and create a password
+            </Text>
+            <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
+              3: Enter the IP Address, Port and Password. Click Connect
+            </Text>
+          </View>
         </View>
-        <View style={styles.description}>
-          <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
-            This app is for controlling or viewing live events diplayed by
-            ProPresenter from the stage or wherever you would want.
-          </Text>
-          <Text
-            style={{
-              color: theme.textOnBackground,
-              marginTop: 10,
-              fontSize: 20,
-            }}
-          >
-            To Connect:
-          </Text>
-          <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
-            1: Preferences -&gt; Network -&gt; Enable Network
-          </Text>
-          <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
-            2: In the same, enable remote and create a password
-          </Text>
-          <Text style={{ color: theme.textOnBackground, fontSize: 20 }}>
-            3: Enter the IP Address, Port and Password. Click Connect
-          </Text>
-        </View>
-      </View>
-      {error &&
-        error.map((err, index) => (
-          <Text style={styles.error} key={index}>
-            {err}
-          </Text>
-        ))}
+        {error &&
+          error.map((err, index) => (
+            <Text style={styles.error} key={index}>
+              {err}
+            </Text>
+          ))}
 
-      <TouchableOpacity
-        disabled={status ? true : false}
-        onPress={handleConnect}
-      >
-        <Text style={[styles.submitButton, { opacity: status ? 0.5 : 1 }]}>
-          {status ? status : "Connect"}
-        </Text>
-      </TouchableOpacity>
-      <StatusBar hidden />
-    </SafeAreaView>
+        <TouchableOpacity
+          disabled={status ? true : false}
+          onPress={handleConnect}
+        >
+          <Text style={[styles.submitButton, { opacity: status ? 0.5 : 1 }]}>
+            {status ? status : "Connect"}
+          </Text>
+        </TouchableOpacity>
+        <StatusBar hidden />
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 }
 
