@@ -12,9 +12,6 @@ import store from "../../lib/store/";
 import { webSocketActions } from "../../lib/utils/webSocketService";
 
 export default () => {
-  webSocketActions.presentationCurrent();
-  webSocketActions.presentationSlideIndex();
-
   return (
     <Provider store={store}>
       <Tabs
